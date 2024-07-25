@@ -1,9 +1,9 @@
 package com.exchange.application.controller;
 
+import com.exchange.application.converter.ConversionConverter;
 import com.exchange.application.dto.ConversionRequestDto;
 import com.exchange.application.dto.ConversionResponseDto;
 import com.exchange.application.dto.RateResponseDto;
-import com.exchange.application.entity.ConversionHistory;
 import com.exchange.application.service.*;
 import com.exchange.application.type.ConversionType;
 import io.swagger.v3.oas.annotations.Operation;

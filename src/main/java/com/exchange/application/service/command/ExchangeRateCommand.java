@@ -2,7 +2,7 @@ package com.exchange.application.service.command;
 
 import com.exchange.application.dto.ConversionResponseDto;
 import com.exchange.application.service.CalculateExchangeRateService;
-import com.exchange.application.service.ConversionConverter;
+import com.exchange.application.converter.ConversionConverter;
 import com.exchange.application.type.ConversionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

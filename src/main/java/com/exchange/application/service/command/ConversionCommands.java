@@ -2,7 +2,7 @@ package com.exchange.application.service.command;
 
 import com.exchange.application.dto.ConversionResponseDto;
 import com.exchange.application.entity.ConversionHistory;
-import com.exchange.application.service.ConversionConverter;
+import com.exchange.application.converter.ConversionConverter;
 import com.exchange.application.service.ConversionHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 

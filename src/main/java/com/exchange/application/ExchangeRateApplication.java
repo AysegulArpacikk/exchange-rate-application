@@ -10,8 +10,6 @@ import org.springframework.web.client.RestTemplate;
 @EnableCaching
 public class ExchangeRateApplication {
 
-	//private static Logger logger = LogManager.getLogger(Application.class);
-
 	public static void main(String[] args) {
 		SpringApplication.run(ExchangeRateApplication.class, args);
 	}
@@ -20,14 +18,4 @@ public class ExchangeRateApplication {
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
-
-//	@Bean
-//	public CommandLineRunner latestRate(ExchangeRateService exchangeRateService) {
-//		return args -> {
-//			logger.info("Latest Euro to Birr rate");
-//			logger.info("1 Euro is: "+ exchangeRateService.rateResponse("TRY").getRates().get("TRY")+"TL");
-//			logger.info("Latest Euro to Dollar rate");
-//			logger.info("1 Euro is: "+ exchangeRateService.rateResponse("USD").getRates().get("USD")+"$");
-//		};
-//	}
 }

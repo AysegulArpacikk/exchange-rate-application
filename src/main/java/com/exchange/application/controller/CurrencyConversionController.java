@@ -3,7 +3,7 @@ package com.exchange.application.controller;
 import com.exchange.application.dto.ConversionRequestDto;
 import com.exchange.application.dto.ConversionResponseDto;
 import com.exchange.application.service.ConversionCommandService;
-import com.exchange.application.service.ConversionConverter;
+import com.exchange.application.converter.ConversionConverter;
 import com.exchange.application.type.ConversionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
