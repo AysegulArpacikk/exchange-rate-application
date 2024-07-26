@@ -1,6 +1,7 @@
 package com.exchange.application.service;
 
 import com.exchange.application.dto.RateResponseDto;
+import com.exchange.application.exception.ExceptionResponse;
 import com.exchange.application.exception.SourceCurrencyCodeNotFoundException;
 import com.exchange.application.exception.TargetCurrencyCodeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,9 @@ public class CalculateExchangeRateService {
     public BigDecimal calculateExchangeRate(String sourceCurrencyCode, String targetCurrencyCode) {
         RateResponseDto rateResponseDto = foreignExchangeRateService.rateResponse();
         if (!rateResponseDto.getRates().containsKey(sourceCurrencyCode)) {
-            throw new SourceCurrencyCodeNotFoundException("Source currency code not found!");
+            throw new SourceCurrencyCodeNotFoundException(ExceptionResponse.SOURCE_CURRENCY_CODE_NOT_FOUND);
         } if (!rateResponseDto.getRates().containsKey(targetCurrencyCode)) {
-            throw new TargetCurrencyCodeNotFoundException("Target currency code not found!");
+            throw new TargetCurrencyCodeNotFoundException(ExceptionResponse.TARGET_CURRENCY_CODE_NOT_FOUND);
         }
 
         return rateResponseDto.getRates().get(targetCurrencyCode)

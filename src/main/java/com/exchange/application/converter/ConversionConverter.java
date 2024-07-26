@@ -25,10 +25,10 @@ public class ConversionConverter {
         return conversionRequestDto;
     }
 
-    public ConversionResponseDto prepareCalculateResponseDto(String sourceCurrencyCode,
-                                                             String targetCurrencyCode,
-                                                             BigDecimal sourceAmount,
-                                                             BigDecimal result) {
+    public ConversionResponseDto prepareConversionResponseDto(String sourceCurrencyCode,
+                                                              String targetCurrencyCode,
+                                                              BigDecimal sourceAmount,
+                                                              BigDecimal result) {
         Date date = new Date();
         StringBuilder sb = new StringBuilder();
         if (sourceAmount != null) {
@@ -43,7 +43,7 @@ public class ConversionConverter {
         return conversionResponseDto;
     }
 
-    public ConversionHistory convertResponseDtoToCalculationHistory(ConversionResponseDto conversionResponseDto) {
+    public ConversionHistory convertResponseDtoToConversionHistory(ConversionResponseDto conversionResponseDto) {
         ConversionHistory conversionHistory = new ConversionHistory();
         conversionHistory.setResult(conversionResponseDto.getConversionResult());
         conversionHistory.setTime(conversionResponseDto.getConversionTime());

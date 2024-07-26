@@ -3,6 +3,7 @@ package com.exchange.application.service;
 import com.exchange.application.dao.ConversionHistoryDao;
 import com.exchange.application.dto.PagingDto;
 import com.exchange.application.entity.ConversionHistory;
+import com.exchange.application.exception.ExceptionResponse;
 import com.exchange.application.exception.InvalidDateRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -11,12 +12,18 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 @Service
 public class ConversionHistoryService {
+
+    private static final int DEFAULT_PAGE_NO = 0;
+    private static final int DEFAULT_PAGE_SIZE = 200;
+    private static final String DEFAULT_LIST_SORT_CRITERIA = "time";
+    private static final String DEFAULT_LIST_SORT_DIRECTION = "DESC";
 
     @Autowired
     private ConversionHistoryDao conversionHistoryDao;
@@ -31,6 +38,7 @@ public class ConversionHistoryService {
         Pageable pageable = preparePageable(pagingDto);
         Date startConversionDate = null;
         Date endConversionDate = null;
+        boolean isStartDateAfterThanEndDate = startDate > endDate;
 
         if (Objects.nonNull(startDate)) {
             startConversionDate = new Date(startDate);
@@ -38,15 +46,19 @@ public class ConversionHistoryService {
             endConversionDate = new Date(endDate);
         }
 
-        if (Objects.nonNull(startConversionDate) && Objects.nonNull(endConversionDate)) {
-            if (startDate > endDate) {
-                throw new InvalidDateRequestException("The start date cannot be later than the end date.");
+        return prepareHistoryListByDate(startConversionDate, endConversionDate, pageable, isStartDateAfterThanEndDate);
+    }
+
+    private List<ConversionHistory> prepareHistoryListByDate(Date startDate, Date endDate, Pageable pageable, boolean isStartDateAfterThanEndDate) {
+        if (Objects.nonNull(startDate) && Objects.nonNull(endDate)) {
+            if (isStartDateAfterThanEndDate) {
+                throw new InvalidDateRequestException(ExceptionResponse.WRONG_DATE_REQUEST);
             }
-            return conversionHistoryDao.findByTimeBetween(startConversionDate, endConversionDate, pageable).getContent();
-        } else if (Objects.isNull(startConversionDate) && Objects.nonNull(endConversionDate)) {
-            return conversionHistoryDao.findByTimeBefore(endConversionDate, pageable).getContent();
-        } else if (Objects.nonNull(startConversionDate) && Objects.isNull(endConversionDate)) {
-            return conversionHistoryDao.findByTimeAfter(startConversionDate, pageable).getContent();
+            return conversionHistoryDao.findByTimeBetween(startDate, endDate, pageable).getContent();
+        } else if (Objects.isNull(startDate) && Objects.nonNull(endDate)) {
+            return conversionHistoryDao.findByTimeBefore(endDate, pageable).getContent();
+        } else if (Objects.nonNull(startDate) && Objects.isNull(endDate)) {
+            return conversionHistoryDao.findByTimeAfter(startDate, pageable).getContent();
         }
         return conversionHistoryDao.findAll(pageable).getContent();
     }
@@ -58,16 +70,16 @@ public class ConversionHistoryService {
 
     private void generatePagingDefaultValue(PagingDto pagingDto) {
         if (pagingDto.getPageNo() == null) {
-            pagingDto.setPageNo(0);
+            pagingDto.setPageNo(DEFAULT_PAGE_NO);
         }
         if (pagingDto.getPageSize() == null) {
-            pagingDto.setPageSize(200);
+            pagingDto.setPageSize(DEFAULT_PAGE_SIZE);
         }
         if (pagingDto.getSortBy() == null) {
-            pagingDto.setSortBy("time");
+            pagingDto.setSortBy(DEFAULT_LIST_SORT_CRITERIA);
         }
         if (pagingDto.getSortDirection() == null) {
-            pagingDto.setSortDirection("DESC");
+            pagingDto.setSortDirection(DEFAULT_LIST_SORT_DIRECTION);
         }
     }
 }

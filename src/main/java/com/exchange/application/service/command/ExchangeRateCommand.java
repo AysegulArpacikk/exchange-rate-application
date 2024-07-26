@@ -29,7 +29,7 @@ public class ExchangeRateCommand extends ConversionCommands {
         String targetCurrencyCode = context.getTargetCurrencyCode();
 
         BigDecimal result = calculateExchangeRateService.calculateExchangeRate(sourceCurrencyCode, targetCurrencyCode);
-        ConversionResponseDto conversionResponseDto = conversionConverter.prepareCalculateResponseDto(sourceCurrencyCode, targetCurrencyCode, null, result);
+        ConversionResponseDto conversionResponseDto = conversionConverter.prepareConversionResponseDto(sourceCurrencyCode, targetCurrencyCode, null, result);
         saveResultToConversionHistory(conversionResponseDto);
         return conversionResponseDto;
     }

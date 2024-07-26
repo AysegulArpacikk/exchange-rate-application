@@ -30,7 +30,7 @@ public class CurrencyConversionCommand extends ConversionCommands {
         BigDecimal sourceAmount = context.getSourceAmount();
 
         BigDecimal result = calculateExchangeRateService.calculateExchangeRate(sourceCurrencyCode, targetCurrencyCode).multiply(sourceAmount);
-        ConversionResponseDto conversionResponseDto = conversionConverter.prepareCalculateResponseDto(sourceCurrencyCode, targetCurrencyCode, sourceAmount, result);
+        ConversionResponseDto conversionResponseDto = conversionConverter.prepareConversionResponseDto(sourceCurrencyCode, targetCurrencyCode, sourceAmount, result);
         saveResultToConversionHistory(conversionResponseDto);
         return conversionResponseDto;
     }

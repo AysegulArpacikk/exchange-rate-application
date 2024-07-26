@@ -6,6 +6,7 @@ import com.exchange.application.entity.ConversionHistory;
 import com.exchange.application.service.ConversionHistoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +20,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ConversionHistoryController extends ConversionBaseController {
 
-    private final ConversionHistoryService conversionHistoryService;
-    private final ConversionConverter conversionConverter;
+    @Autowired
+    private ConversionHistoryService conversionHistoryService;
+
+    @Autowired
+    private ConversionConverter conversionConverter;
 
     @GetMapping()
     @Operation(summary = "Get conversion history", description = "This method get all conversion history according to not required parameters.")

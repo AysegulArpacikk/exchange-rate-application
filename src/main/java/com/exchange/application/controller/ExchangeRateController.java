@@ -8,23 +8,33 @@ import com.exchange.application.service.*;
 import com.exchange.application.type.ConversionType;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/exchange/rate")
-@RequiredArgsConstructor
 public class ExchangeRateController extends ConversionBaseController {
 
-    private final ForeignExchangeRateService foreignExchangeRateService;
-    private final ConversionConverter conversionConverter;
-    private final ConversionCommandService conversionCommandService;
+    @Autowired
+    private ForeignExchangeRateService foreignExchangeRateService;
+
+    @Autowired
+    private ConversionConverter conversionConverter;
+
+    @Autowired
+    private ConversionCommandService conversionCommandService;
 
     @GetMapping()
     @Operation(summary = "Exchange rates list", description = "This method list exchange rate from foreign service")
     public ResponseEntity getAllExchangeRate() {
-        RateResponseDto rateResponseDto = foreignExchangeRateService.rateResponse();
-        return ResponseEntity.ok(rateResponseDto);
+        try {
+            RateResponseDto rateResponseDto = foreignExchangeRateService.rateResponse();
+            return ResponseEntity.ok(rateResponseDto);
+        } catch (Exception exception) {
+            return ResponseEntity.badRequest().body(setExceptionMessage(exception));
+        }
     }
 
     @PostMapping("/calculate")
@@ -33,7 +43,7 @@ public class ExchangeRateController extends ConversionBaseController {
         try {
             ConversionRequestDto conversionRequestDto = conversionConverter.prepareConversionRequestDto(sourceCurrencyCode, targetCurrencyCode, null, ConversionType.EXCHANGE_RATE);
             ConversionResponseDto conversionResponseDto = conversionCommandService.prepareRateCalculation(conversionRequestDto);
-            return ResponseEntity.ok(conversionResponseDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(conversionResponseDto);
         } catch (Exception exception) {
             return ResponseEntity.badRequest().body(setExceptionMessage(exception));
         }

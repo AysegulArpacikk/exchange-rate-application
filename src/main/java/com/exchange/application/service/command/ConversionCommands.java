@@ -19,7 +19,7 @@ public abstract class ConversionCommands {
     public abstract ConversionResponseDto execute(ConversionContext context);
 
     public void saveResultToConversionHistory(ConversionResponseDto conversionResponseDto) {
-        ConversionHistory conversionHistory = conversionConverter.convertResponseDtoToCalculationHistory(conversionResponseDto);
+        ConversionHistory conversionHistory = conversionConverter.convertResponseDtoToConversionHistory(conversionResponseDto);
         conversionHistoryService.saveHistory(conversionHistory);
     }
 }
