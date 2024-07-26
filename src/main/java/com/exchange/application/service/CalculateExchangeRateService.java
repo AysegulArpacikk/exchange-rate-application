@@ -1,6 +1,8 @@
 package com.exchange.application.service;
 
 import com.exchange.application.dto.RateResponseDto;
+import com.exchange.application.exception.SourceCurrencyCodeNotFoundException;
+import com.exchange.application.exception.TargetCurrencyCodeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +13,16 @@ import java.math.RoundingMode;
 public class CalculateExchangeRateService {
 
     @Autowired
-    private ExchangeRateService exchangeRateService;
+    private ForeignExchangeRateService foreignExchangeRateService;
 
     public BigDecimal calculateExchangeRate(String sourceCurrencyCode, String targetCurrencyCode) {
-        RateResponseDto rateResponseDto = exchangeRateService.rateResponse();
+        RateResponseDto rateResponseDto = foreignExchangeRateService.rateResponse();
+        if (!rateResponseDto.getRates().containsKey(sourceCurrencyCode)) {
+            throw new SourceCurrencyCodeNotFoundException("Source currency code not found!");
+        } if (!rateResponseDto.getRates().containsKey(targetCurrencyCode)) {
+            throw new TargetCurrencyCodeNotFoundException("Target currency code not found!");
+        }
+
         return rateResponseDto.getRates().get(targetCurrencyCode)
                 .divide(rateResponseDto.getRates().get(sourceCurrencyCode), 3, RoundingMode.CEILING);
     }

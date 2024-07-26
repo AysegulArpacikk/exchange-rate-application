@@ -3,11 +3,13 @@ package com.exchange.application.service;
 import com.exchange.application.dao.ConversionHistoryDao;
 import com.exchange.application.dto.PagingDto;
 import com.exchange.application.entity.ConversionHistory;
+import com.exchange.application.exception.InvalidDateRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -19,6 +21,7 @@ public class ConversionHistoryService {
     @Autowired
     private ConversionHistoryDao conversionHistoryDao;
 
+    @Transactional
     public void saveHistory(ConversionHistory conversionHistory) {
         conversionHistoryDao.save(conversionHistory);
     }
@@ -36,6 +39,9 @@ public class ConversionHistoryService {
         }
 
         if (Objects.nonNull(startConversionDate) && Objects.nonNull(endConversionDate)) {
+            if (startDate > endDate) {
+                throw new InvalidDateRequestException("The start date cannot be later than the end date.");
+            }
             return conversionHistoryDao.findByTimeBetween(startConversionDate, endConversionDate, pageable).getContent();
         } else if (Objects.isNull(startConversionDate) && Objects.nonNull(endConversionDate)) {
             return conversionHistoryDao.findByTimeBefore(endConversionDate, pageable).getContent();
