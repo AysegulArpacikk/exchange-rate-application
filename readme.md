@@ -13,7 +13,7 @@ You can reach swagger iu by 8080 port with this link: [swagger](http://localhost
 
 ### Explanation
 #### 1-Exchange Rate Endpoint: 
-**1.1** `GET /api/v1/exchange/rate` -> This endpoint list exchange rate from foreign service.
+**1.1** `GET /api/v1/exchange/rate` -> This endpoint list exchange rate from foreign service. The fetched exchange rate values are stored in memory cache.
 #### _Example Request:_
 ```bash
 curl --location --request GET 'http://localhost:8080/api/v1/exchange/rate' \
@@ -21,7 +21,7 @@ curl --location --request GET 'http://localhost:8080/api/v1/exchange/rate' \
 ```
 There is no need to enter any parameters.
 
-**1.2** `POST /api/v1/exchange/rate/calculate` -> This endpoint calculate exchange rate between two currency and then save to history table.
+**1.2** `POST /api/v1/exchange/rate` -> This endpoint calculate exchange rate between two currency and then save to history table.
 
 Params | Value | Mandatory 
 --- | --- | --- 

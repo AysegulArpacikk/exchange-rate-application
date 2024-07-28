@@ -36,7 +36,7 @@ public class ExchangeRateController extends ConversionBaseController {
         }
     }
 
-    @PostMapping("/calculate")
+    @PostMapping()
     @Operation(summary = "Calculate exchange rate", description = "This method calculate exchange rate between two currency and then save to history table.")
     public ResponseEntity calculateExchangeRate(@RequestParam String sourceCurrencyCode, @RequestParam String targetCurrencyCode) {
         try {
