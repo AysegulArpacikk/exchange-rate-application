@@ -36,7 +36,7 @@ public class ConversionHistoryController extends ConversionBaseController {
                                                 @RequestParam(required = false) Long endDate) {
         try {
             PagingDto pagingDto = conversionConverter.preparePagingDto(pageNo, pageSize, sortBy, sortDirection);
-            List<ConversionHistory> conversionHistory = conversionHistoryService.getCalculationHistory(pagingDto, startDate, endDate);
+            List<ConversionHistory> conversionHistory = conversionHistoryService.getConversionHistory(pagingDto, startDate, endDate);
             return ResponseEntity.ok(conversionHistory);
         } catch (Exception exception) {
             return ResponseEntity.badRequest().body(setExceptionMessage(exception));

@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
@@ -57,7 +57,7 @@ class ExchangeRateControllerTest {
         rateResponseDto.setSuccess(true);
         rateResponseDto.setTimestamp(1721969771000L);
 
-        when(foreignExchangeRateService.rateResponse()).thenReturn(rateResponseDto);
+        when(foreignExchangeRateService.fetchRateResponse()).thenReturn(rateResponseDto);
 
         ResponseEntity allExchangeRate = exchangeRateController.getAllExchangeRate();
 
@@ -67,7 +67,7 @@ class ExchangeRateControllerTest {
 
     @Test
     public void shouldCatchExceptionWhenGetAllExchangeRate() {
-        doThrow(RuntimeException.class).when(foreignExchangeRateService).rateResponse();
+        doThrow(RuntimeException.class).when(foreignExchangeRateService).fetchRateResponse();
 
         ResponseEntity response = null;
 

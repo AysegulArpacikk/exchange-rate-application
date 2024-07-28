@@ -23,7 +23,9 @@ import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.doThrow;
 
 @ExtendWith(MockitoExtension.class)
 @RunWith(MockitoJUnitRunner.class)
@@ -59,14 +61,14 @@ public class ConversionHistoryControllerTest {
         conversionHistoryList.add(history2);
 
         when(conversionConverter.preparePagingDto(1, 10, "date", "asc")).thenReturn(pagingDto);
-        when(conversionHistoryService.getCalculationHistory(pagingDto, 1609459200000L, 1612137600000L))
+        when(conversionHistoryService.getConversionHistory(pagingDto, 1609459200000L, 1612137600000L))
                 .thenReturn(conversionHistoryList);
 
         ResponseEntity response = conversionHistoryController.getConversionHistory(1, 10, "date", "asc", 1609459200000L, 1612137600000L);
 
         assertEquals(ResponseEntity.ok(conversionHistoryList), response);
         verify(conversionConverter).preparePagingDto(1, 10, "date", "asc");
-        verify(conversionHistoryService).getCalculationHistory(pagingDto, 1609459200000L, 1612137600000L);
+        verify(conversionHistoryService).getConversionHistory(pagingDto, 1609459200000L, 1612137600000L);
     }
 
     @Test
@@ -76,7 +78,7 @@ public class ConversionHistoryControllerTest {
         ExceptionResponse error = ExceptionResponse.createResultInfo(null, "clientError");
 
         when(conversionConverter.preparePagingDto(1, 10, "date", "asc")).thenReturn(pagingDto);
-        doThrow(InvalidDateRequestException.class).when(conversionHistoryService).getCalculationHistory(pagingDto, startDate, endDate);
+        doThrow(InvalidDateRequestException.class).when(conversionHistoryService).getConversionHistory(pagingDto, startDate, endDate);
 
         ResponseEntity response = conversionHistoryController.getConversionHistory(1, 10, "date", "asc", startDate, endDate);
 

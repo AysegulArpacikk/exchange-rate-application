@@ -7,7 +7,6 @@ import com.exchange.application.dto.RateResponseDto;
 import com.exchange.application.service.*;
 import com.exchange.application.type.ConversionType;
 import io.swagger.v3.oas.annotations.Operation;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +29,7 @@ public class ExchangeRateController extends ConversionBaseController {
     @Operation(summary = "Exchange rates list", description = "This method list exchange rate from foreign service")
     public ResponseEntity getAllExchangeRate() {
         try {
-            RateResponseDto rateResponseDto = foreignExchangeRateService.rateResponse();
+            RateResponseDto rateResponseDto = foreignExchangeRateService.fetchRateResponse();
             return ResponseEntity.ok(rateResponseDto);
         } catch (Exception exception) {
             return ResponseEntity.badRequest().body(setExceptionMessage(exception));

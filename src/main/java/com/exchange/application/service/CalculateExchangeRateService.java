@@ -17,7 +17,7 @@ public class CalculateExchangeRateService {
     private ForeignExchangeRateService foreignExchangeRateService;
 
     public BigDecimal calculateExchangeRate(String sourceCurrencyCode, String targetCurrencyCode) {
-        RateResponseDto rateResponseDto = foreignExchangeRateService.rateResponse();
+        RateResponseDto rateResponseDto = foreignExchangeRateService.fetchRateResponse();
         if (!rateResponseDto.getRates().containsKey(sourceCurrencyCode)) {
             throw new SourceCurrencyCodeNotFoundException(ExceptionResponse.SOURCE_CURRENCY_CODE_NOT_FOUND);
         } if (!rateResponseDto.getRates().containsKey(targetCurrencyCode)) {

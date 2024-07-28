@@ -12,7 +12,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -33,12 +32,11 @@ public class ConversionHistoryService {
         conversionHistoryDao.save(conversionHistory);
     }
 
-    public List<ConversionHistory> getCalculationHistory(PagingDto pagingDto, Long startDate, Long endDate) {
+    public List<ConversionHistory> getConversionHistory(PagingDto pagingDto, Long startDate, Long endDate) {
         generatePagingDefaultValue(pagingDto);
         Pageable pageable = preparePageable(pagingDto);
         Date startConversionDate = null;
         Date endConversionDate = null;
-        boolean isStartDateAfterThanEndDate = startDate > endDate;
 
         if (Objects.nonNull(startDate)) {
             startConversionDate = new Date(startDate);
@@ -46,12 +44,12 @@ public class ConversionHistoryService {
             endConversionDate = new Date(endDate);
         }
 
-        return prepareHistoryListByDate(startConversionDate, endConversionDate, pageable, isStartDateAfterThanEndDate);
+        return prepareHistoryListByDate(startConversionDate, endConversionDate, pageable);
     }
 
-    private List<ConversionHistory> prepareHistoryListByDate(Date startDate, Date endDate, Pageable pageable, boolean isStartDateAfterThanEndDate) {
+    private List<ConversionHistory> prepareHistoryListByDate(Date startDate, Date endDate, Pageable pageable) {
         if (Objects.nonNull(startDate) && Objects.nonNull(endDate)) {
-            if (isStartDateAfterThanEndDate) {
+            if (startDate.after(endDate)) {
                 throw new InvalidDateRequestException(ExceptionResponse.WRONG_DATE_REQUEST);
             }
             return conversionHistoryDao.findByTimeBetween(startDate, endDate, pageable).getContent();
