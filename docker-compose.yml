@@ -1,0 +1,14 @@
+version: '3.9'
+
+services:
+  case:
+    build: .
+    container_name: exchange
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - app-network
+
+networks:
+  app-network:

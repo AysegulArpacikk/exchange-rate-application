@@ -7,12 +7,14 @@ In this project, it is aimed to develop simple foreign exchange application.
 * You can see the dependencies used in the pom.xml file.
 
 ## Run Project With Docker
+```bash
+docker-compose up -d
+```
+
+Then you can access the application from swagger with port 8080.: [swagger](http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config)
 
 ## API Informations
-You can reach swagger iu by 8080 port with this link: [swagger](http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config)
-
-### Explanation
-#### 1-Exchange Rate Endpoint: 
+### 1-Exchange Rate Endpoint: 
 **1.1** `GET /api/v1/exchange/rate` -> This endpoint list exchange rate from foreign service. The fetched exchange rate values are stored in memory cache.
 #### _Example Request:_
 ```bash
@@ -41,7 +43,7 @@ curl --location --request POST 'http://localhost:8080/api/v1/exchange/rate/calcu
 }
 ```
 -----
-#### 2-Currency Conversion Endpoint:
+### 2-Currency Conversion Endpoint:
 ***2.1*** `POST /api/v1/currency/conversion` -> This endpoint calculate currency conversion between two currency and then save to history table.
 
 Params | Value | Mandatory
@@ -64,7 +66,7 @@ curl --location --request POST 'http://localhost:8080/api/v1/currency/conversion
 }
 ```
 -----
-#### 3-Conversion History Endpoint:
+### 3-Conversion History Endpoint:
 ***3.1*** `GET /api/v1/conversionHistory` -> This endpoint returns conversion history information in a paginated format.
 
 Params | Value | Mandatory | Default
